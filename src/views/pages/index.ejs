@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <%- include('../partials/main-header.ejs') %>
+    <div>
+        <h1>Threads</h1>
+        <div>
+            <% threads.forEach(t => { %>
+                <button class="thread">
+                    <div>
+                        <h1> <%= t.title %> </h1>
+                    </div>
+                    <div>
+                    <% if(t.text.length > 30) { %>
+                        <p><%=t.text.slice(30) %>...</p>
+                    <% }else{ %>
+                        <p><%= t.text %></p>
+                    <%} %>
+                    </div>
+                </button>
+            <% }) %>
+        </div>
+    </div>
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

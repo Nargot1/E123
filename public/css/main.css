@@ -2,7 +2,6 @@ body{
     margin: 0;
     height: 100vh;
 }
-header{
-    background-color: blueviolet;
-    padding: 50px;
+textarea{
+    resize: none;
 }

@@ -1,0 +1,8 @@
+textarea{
+    width: 80%;
+
+}
+form{
+    flex-direction: column;
+    display: flex;
+}
