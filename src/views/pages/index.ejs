@@ -1,33 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/footer.css">
 </head>
+
 <body>
     <%- include('../partials/main-header.ejs') %>
-    <div>
-        <h1>Threads</h1>
-        <div>
-            <% threads.forEach(t => { %>
-                <button class="thread">
-                    <div>
-                        <h1> <%= t.title %> </h1>
+        <div class="page-container">
+            <h1 class="page-title">Threads</h1>
+
+            <form method="get" action="/" class="search-form"
+                style="margin-bottom:12px; display:flex; gap:8px; align-items:center">
+                <input type="text" name="q" placeholder="Search by title"
+                    value="<%= typeof q !== 'undefined' ? q : '' %>">
+                <select name="sort">
+                    <option value="date" <%= sort === 'date' ? 'selected' : '' %>>Newest</option>
+                    <option value="likes" <%= sort === 'likes' ? 'selected' : '' %>>Most liked</option>
+                </select>
+                <button type="submit">Search</button>
+                <% if(q){ %>
+                <a href="/" style="margin-left:8px">Clear</a>
+                <% } %>
+            </form>
+
+            <div class="threads-list">
+                <% threads.forEach(t => { %>
+                <div class="thread">
+                    <a class="thread-link" href="/show?id=<%= t._id %>">
+                        <div class="thread-header">
+                            <h2>
+                                <%= t.title %>
+                            </h2>
+                        </div>
+                        <div class="thread-body">
+                            <p>
+                                <%= (t.text || '' ).slice(0,120) %>
+                                <%= t.text.length> 120 ? '...' : '' %>
+                            </p>
+                        </div>
+                        <div class="thread-footer">
+                            <span class="created">
+                                <%= t.createdAt ? new Date(t.createdAt).toLocaleDateString() : '' %>
+                            </span>
+                        </div>
+                    </a>
+
+                    <div class="thread-actions">
+                        <p class="btn-like">
+                            <%= t.likes || 0 %> ♥
+                        </p>
+
+                        <form method="post" action="/delete" onsubmit="return confirm('Delete this thread?')">
+                            <input type="hidden" name="id" value="<%= t._id %>">
+                            <button class="btn-delete" type="submit">Delete</button>
+                        </form>
                     </div>
-                    <div>
-                    <% if(t.text.length > 30) { %>
-                        <p><%=t.text.slice(30) %>...</p>
-                    <% }else{ %>
-                        <p><%= t.text %></p>
-                    <%} %>
-                    </div>
-                </button>
-            <% }) %>
+                </div>
+                <% }) %>
+            </div>
         </div>
-    </div>
-    <%- include('../partials/footer.ejs') %>
+        <%- include('../partials/footer.ejs') %>
 </body>
+
 </html>

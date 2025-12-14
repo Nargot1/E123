@@ -1,7 +1,51 @@
 body{
     margin: 0;
-    height: 100vh;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f3f6f9;
+    color: #222;
 }
 textarea{
     resize: none;
+}
+
+.container{
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 16px
+}
+
+.btn-like{
+    background:transparent;
+    border:1px solid #e0e0e0;
+    padding:6px 10px;
+    border-radius:8px;
+    cursor:pointer;
+    color:#d6336c;
+}
+.btn-delete{
+    background:#ff4d4f;
+    color:#fff;
+    border:none;
+    padding:6px 10px;
+    border-radius:8px;
+    cursor:pointer;
+}
+.btn-edit{
+    background:#1890ff;
+    color:#fff;
+    border:none;
+    padding:4px 10px;
+    border-radius:8px;
+    cursor:pointer;
+    text-decoration: none;
+}
+.btn-back{
+    background:#777;
+    color:#fff;
+    border:none;
+    padding:4px 10px;
+    border-radius:8px;
+    cursor:pointer;
+    text-decoration: none;
 }

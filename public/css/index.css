@@ -1,24 +1,69 @@
-.thread{
-    width: 90%;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid black;
-    border-radius: 10px;
-    margin: 0 auto;
-    padding: 0;
-    box-sizing: border-box;
+.page-container{
+    max-width:900px;
+    margin:30px auto;
+    padding:0 16px;
 }
 
-.thread > div:first-of-type{
-    margin: 0;
-    padding: 0;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-    width: 100%;
-    height: 50%;
-    flex-shrink: 0;
-    
-    text-align: justify;
-    background-color: red;
-    box-sizing: border-box;
+.page-title{
+    font-size:2rem;
+    margin-bottom:16px;
+    color:#222;
 }
+
+.threads-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.thread{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    padding:12px;
+    border-radius:12px;
+    background-color: #f7f7f7;
+    border:1px solid #e0e0e0;
+    text-decoration:none;
+}
+.thread:hover{
+    transform:translateY(-4px);
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.thread-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.thread-header h2{
+    margin:0 0 8px 0;
+    font-size:1.1rem;
+    color:#111;
+}
+.thread-body p{
+    margin:0 0 10px 0;
+    color:#444;
+    line-height:1.4;
+}
+.thread-footer{
+    display:flex;
+    justify-content:space-between;
+    font-size:0.9rem;
+    color:#666;
+}
+.thread-link{
+    flex:1;
+    text-decoration:none;
+    color:inherit;
+    display:block;
+}
+.thread-actions{
+    display:flex;
+    gap:8px;
+    align-items:center;
+}
+.thread-actions form{
+    margin:0;
+}
+

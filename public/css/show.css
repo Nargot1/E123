@@ -1,0 +1,29 @@
+.page-container{
+    max-width: 900px;
+    margin: 30px auto;
+}
+
+.thread-full {
+    background-color: #f7f7f7;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e0e0e0;
+    
+}
+.thread-full h1{
+    font-size: 1.8rem;
+    margin: 0;
+    color: #111;
+}
+.thread-actions {
+    margin-top: 16px;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+.thread-actions div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}

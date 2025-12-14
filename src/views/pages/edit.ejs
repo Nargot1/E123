@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit - <%= thread.title %></title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+    <%- include('../partials/main-header.ejs') %>
+    <div class="page-container">
+        <h1>Edit Thread</h1>
+        <form method="post" action="/edit" class="edit-form">
+            <input type="hidden" name="id" value="<%= thread._id %>">
+            <div class="form-row">
+                <label>Title</label>
+                <input name="title" value="<%= thread.title %>" required>
+            </div>
+            <div class="form-row">
+                <label>Text</label>
+                <textarea name="text" required><%= thread.text %></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="submit">Save</button>
+                <a class="btn-cancel" href="/show?id=<%= thread._id %>">Cancel</a>
+            </div>
+        </form>
+    </div>
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>
