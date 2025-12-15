@@ -19,14 +19,21 @@ async function getThreadById(id) {
 
 async function likeThread(id, userId) {
     const db = await getDB()
-    const likeList = await db.collection('users').findOne({_id: userId}).likeList || [];
-    let liked = likeList.find((a) => a === id);
-    console.log(likeList)
-    if (!liked)
-       //await db.collection('users').updateOne({ _id: new ObjectId(userId) }, {likeList})
+    console.log(userId)
+    const likeList = (await db.collection('users').findOne({_id: new ObjectId(userId)})).likeList || [];
+    let liked = likeList.find((a) => a == id);
+    
+    if (!liked){
+        likeList.push(id)
+        console.log(likeList);
+        await db.collection('users').updateOne({ _id: new ObjectId(userId) }, { $set: { likeList } });
         return await db.collection('threads').updateOne({ _id: new ObjectId(id) }, { $inc: { likes: 1 } })
-    else
-        return false
+    }
+    else{
+        console.log(liked)
+        await db.collection('users').updateOne({ _id: new ObjectId(userId) }, { $set: { likeList } });
+        return await db.collection('threads').updateOne({ _id: new ObjectId(id) }, { $inc: { likes: 1 } })
+    }
 }
 
 async function deleteThread(id, userId) {

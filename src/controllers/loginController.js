@@ -12,6 +12,7 @@ async function postLogin(req,res){
         res.redirect(`/login?error=${account}`)
         return
     }
+    console.log(account._id)
     res.cookie('account', account._id, { maxAge: 3600000 });
     res.redirect('/')
 }
