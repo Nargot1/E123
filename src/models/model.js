@@ -7,7 +7,7 @@ async function getAllThreads(){
     .find().sort({createdAt: -1}).toArray()
 }
 
-async function createThread(title,text) {
+async function createThread(userId, title,text) {
     const db = await getDB()
     return await db.collection('threads').insertOne({title,text,createdAt: new Date(), likes: 0})
 }
@@ -17,19 +17,26 @@ async function getThreadById(id) {
     return await db.collection('threads').findOne({ _id: new ObjectId(id) })
 }
 
-async function likeThread(id) {
+async function likeThread(id, userId) {
     const db = await getDB()
-    return await db.collection('threads').updateOne({ _id: new ObjectId(id) }, { $inc: { likes: 1 } })
+    const likeList = await db.collection('users').findOne({_id: userId}).likeList || [];
+    let liked = likeList.find((a) => a === id);
+    console.log(likeList)
+    if (!liked)
+       //await db.collection('users').updateOne({ _id: new ObjectId(userId) }, {likeList})
+        return await db.collection('threads').updateOne({ _id: new ObjectId(id) }, { $inc: { likes: 1 } })
+    else
+        return false
 }
 
-async function deleteThread(id) {
+async function deleteThread(id, userId) {
     const db = await getDB()
     return await db.collection('threads').deleteOne({ _id: new ObjectId(id) })
 }
 
-async function updateThread(id, title, text) {
+async function updateThread(id, userId, title, text) {
     const db = await getDB()
-    return await db.collection('threads').updateOne({ _id: new ObjectId(id) }, { $set: { title, text } })
+    return await db.collection('threads').updateOne({ _id: new ObjectId(id) }, { $set: { userId, title, text } })
 }
 
 async function searchThreadsByTitle(q, sort = 'date'){

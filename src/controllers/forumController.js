@@ -3,63 +3,68 @@ const { getAllThreads, createThread, getThreadById, likeThread, deleteThread, up
 async function getIndex(req, res) {
     const q = req.query.q || ''
     const sort = req.query.sort || 'date'
+    const account = req.headers.cookie.account;
     let threads
     if(q){
         threads = await searchThreadsByTitle(q, sort)
     } else {
         threads = await searchThreadsByTitle('', sort)
     }
-    res.render('pages/index', { threads, q, sort })
+    res.render('pages/index', { threads, q, sort, account: account || '' })
 }
 function getCreate(req, res) {
-    res.render('pages/create')
+    res.render('pages/create', {account: account || '' })
 }
 function postCreate(req, res) {
     const body = req.body
+    const account = req.headers.cookie.account;
 
-    createThread(body.title, body.text)
+    createThread(account, body.title, body.text)
 
     res.redirect('/')
 }
 async function getShow(req, res) {
     const id = req.query.id
-    if (!id) {
-        return res.redirect('/')
-    }
+    const account = req.headers.cookie.account;
+    if (!id) return res.redirect('/')
     const thread = await getThreadById(id)
     if (!thread) return res.status(404).send('Thread not found')
-    res.render('pages/show', { thread })
+    res.render('pages/show', { thread, account: account || ''  })
 }
 
 async function getEdit(req, res) {
     const id = req.query.id
+    const account = req.headers.cookie.account;
     if (!id) return res.redirect('/')
     const thread = await getThreadById(id)
     if (!thread) return res.status(404).send('Thread not found')
-    res.render('pages/edit', { thread })
+    res.render('pages/edit', { thread, account: account || ''  })
 }
 
 async function postLike(req, res) {
     const id = req.body.id
+    const account = req.headers.cookie.account;
     if (!id) return res.status(400).send('Wrong id')
-    await likeThread(id);
-    res.redirect(`/show?id=${id}`)
+    const alreadyLiked = await likeThread(id, account);
+    res.status(100).redirect(`/show?id=${id}`, {account: account || '' })
 }
 
 async function postDelete(req, res) {
     const id = req.body.id;
+    const account = req.headers.cookie.account;
     if (!id) return res.status(400).send('Wrong id')
-    await deleteThread(id);
-    res.redirect('/');
+    await deleteThread(id, account);
+    res.status(100).redirect('/', { account: account || '' });
 }
 
 async function postEdit(req, res) {
     const id = req.body.id
     const title = req.body.title
     const text = req.body.text
+    const account = req.headers.cookie.account;
     if (!id) return res.status(400).send('Wrong id')
-    await updateThread(id, title, text)
-    res.redirect(`/show?id=${id}`)
+    await updateThread(id, account, title, text)
+    res.status(100).redirect(`/show?id=${id}`, { account: account || '' })
 }
 
 module.exports = { getIndex, getCreate, postCreate, getShow, getEdit, postLike, postDelete, postEdit }

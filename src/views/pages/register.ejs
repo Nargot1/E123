@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/footer.css">
+</head>
+
+<body>
+    <%- include('../partials/login-header.ejs') %>
+        <div class="page-container">
+            <form action="/register" method="post">
+                <div class="username-container">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username">
+                </div>
+
+                <div class="password-container">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password">
+                </div>
+                
+                <button type="submit">Register</button>
+            </form>
+        </div>
+        <% if(error) %>
+            <p><%= error %></p>
+        <%- include('../partials/footer.ejs') %>
+</body>
+
+</html>
