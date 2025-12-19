@@ -9,7 +9,7 @@ async function getAllThreads(){
 
 async function createThread(userId, title,text) {
     const db = await getDB()
-    return await db.collection('threads').insertOne({title,text,createdAt: new Date(), likes: 0})
+    return await db.collection('threads').insertOne({userId, title, text, createdAt: new Date(), likes: 0})
 }
 
 async function getThreadById(id) {
@@ -19,31 +19,36 @@ async function getThreadById(id) {
 
 async function likeThread(id, userId) {
     const db = await getDB()
-    console.log(userId)
-    const likeList = (await db.collection('users').findOne({_id: new ObjectId(userId)})).likeList || [];
-    let liked = likeList.find((a) => a == id);
-    
-    if (!liked){
-        likeList.push(id)
-        console.log(likeList);
-        await db.collection('users').updateOne({ _id: new ObjectId(userId) }, { $set: { likeList } });
-        return await db.collection('threads').updateOne({ _id: new ObjectId(id) }, { $inc: { likes: 1 } })
+
+    const user = await db.collection('users').findOne({_id: new ObjectId(userId)})
+    const likeList = (user && user.likeList) ? user.likeList : []
+    const alreadyLiked = likeList.find(a => String(a) === String(id))
+    if(!alreadyLiked){
+        likeList.push(String(id))
+        await db.collection('users').updateOne({ _id: user._id }, { $set: { likeList } })
+        await db.collection('threads').updateOne({ _id: new ObjectId(id) }, { $inc: { likes: 1 } })
+        return { liked: true }
     }
-    else{
-        console.log(liked)
-        await db.collection('users').updateOne({ _id: new ObjectId(userId) }, { $set: { likeList } });
-        return await db.collection('threads').updateOne({ _id: new ObjectId(id) }, { $inc: { likes: 1 } })
-    }
+
+    return { liked: true }
 }
 
 async function deleteThread(id, userId) {
     const db = await getDB()
-    return await db.collection('threads').deleteOne({ _id: new ObjectId(id) })
+    const thread = await db.collection('threads').findOne({ _id: new ObjectId(id) })
+    if(!thread) return { notFound: true }
+
+    if(String(thread.userId) !== String(userId)) return { unauthorized: true }
+    const res = await db.collection('threads').deleteOne({ _id: new ObjectId(id) })
+    return res
 }
 
 async function updateThread(id, userId, title, text) {
     const db = await getDB()
-    return await db.collection('threads').updateOne({ _id: new ObjectId(id) }, { $set: { userId, title, text } })
+    const thread = await db.collection('threads').findOne({ _id: new ObjectId(id) })
+    if(!thread) return { notFound: true }
+    if(String(thread.userId) !== String(userId)) return { unauthorized: true }
+    return await db.collection('threads').updateOne({ _id: new ObjectId(id) }, { $set: { title, text } })
 }
 
 async function searchThreadsByTitle(q, sort = 'date'){

@@ -25,7 +25,7 @@ function postCreate(req, res) {
     res.redirect('/')
 }
 async function getShow(req, res) {
-    const id = req.query.id
+    const id = req.query.id;
     const account = req.cookies.account;
     if (!id) return res.redirect('/')
     const thread = await getThreadById(id)
@@ -39,6 +39,7 @@ async function getEdit(req, res) {
     if (!id) return res.redirect('/')
     const thread = await getThreadById(id)
     if (!thread) return res.status(404).send('Thread not found')
+    if(String(thread.userId) !== String(account)) return res.status(403).send('Forbidden')
     res.render('pages/edit', { thread, account: account || ''  })
 }
 
@@ -47,15 +48,17 @@ async function postLike(req, res) {
     const account = req.cookies.account;
     if (!id) return res.status(400).send('Wrong id')
     const alreadyLiked = await likeThread(id, account);
-    res.status(100).redirect(`/show?id=${id}`)
+    res.redirect(`/show?id=${id}`)
 }
 
 async function postDelete(req, res) {
     const id = req.body.id;
     const account = req.cookies.account;
     if (!id) return res.status(400).send('Wrong id')
-    await deleteThread(id, account);
-    res.status(100).redirect('/');
+    const result = await deleteThread(id, account);
+    if(result && result.unauthorized) return res.status(403).send('Forbidden')
+    if(result && result.notFound) return res.status(404).send('Not found')
+    res.redirect('/');
 }
 
 async function postEdit(req, res) {
@@ -64,8 +67,10 @@ async function postEdit(req, res) {
     const text = req.body.text
     const account = req.cookies.account;
     if (!id) return res.status(400).send('Wrong id')
-    await updateThread(id, account, title, text)
-    res.status(100).redirect(`/show?id=${id}`)
+    const result = await updateThread(id, account, title, text)
+    if(result && result.unauthorized) return res.status(403).send('Forbidden')
+    if(result && result.notFound) return res.status(404).send('Not found')
+    res.redirect(`/show?id=${id}`)
 }
 
 module.exports = { getIndex, getCreate, postCreate, getShow, getEdit, postLike, postDelete, postEdit }

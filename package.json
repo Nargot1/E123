@@ -1,11 +1,10 @@
 {
-  "name": "e123",
+  "name": "forum",
   "version": "1.0.0",
-  "description": "",
+  "description": "Aplikacja forum. Możliwe tworzenie postów, rejestracja i logowanie użytkowników.",
   "main": "server.js",
   "scripts": {
-    "start": "node ./src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./src/server.js"
   },
   "repository": {
     "type": "git",
@@ -13,7 +12,7 @@
   },
   "keywords": [],
   "author": "Jakub Witkowski",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Nargot1/E123/issues"
   },

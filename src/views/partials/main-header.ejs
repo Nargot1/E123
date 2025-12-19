@@ -2,8 +2,13 @@
   <div class="container">
     <div class="brand"><a href="/">Simple Forum</a></div>
     <nav class="main-nav">
-      <a href="/login">Log In</a>
-      <a href="/create">Create Thread</a>
+      <% if (typeof account !== 'undefined' && account) { %>
+        <a href="/logout">Logout</a>
+        <a href="/create">Create Thread</a>
+      <% } else { %>
+        <a href="/login">Login</a>
+        <a href="/create">Create Thread</a>
+      <% } %>
     </nav>
   </div>
 </header>
