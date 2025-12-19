@@ -58,6 +58,7 @@ Prosty serwis forum pozwalający na tworzenie, przeglądanie, like'owanie, edycj
 - EJS
 - MongoDB
 - cookie-parser
+- Crypto
 - CSS
 
 ## Autor
