@@ -21,12 +21,16 @@ Prosty serwis forum pozwalający na tworzenie, przeglądanie, like'owanie, edycj
    ```bash
    npm install
    ```
-3. Uruchom lokalnie MongoDB (domyślnie: `mongodb://localhost:27017`).
-4. Uruchom aplikację:
+3. Uruchom Docker.
+4. Otwórz konsolę w dockerze i wklej komendę:
+    ```bash
+    docker run -d --name mongo -p 27017:27017 mongo:6.0;
+    ```
+5. Uruchom aplikację:
    ```bash
    npm start
    ```
-5. Otwórz w przeglądarce:
+6. Otwórz w przeglądarce:
    - http://localhost:3000
 
 ## Lista endpointów
